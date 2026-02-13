@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats de Prédiction</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+        background: linear-gradient(120deg, #f0f4f8, #d9e2ec); /* un fond doux en dégradé */
+        font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #2E8B57;
+        }
+        h2, h3 {
+            color: #333;
+        }
+        ul li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+            <h2 style="text-align: center;">RESULTAT DE LA PREDICTION</h2>
+
+            <div class="card">
+                <h3 style="text-align: center;">Données saisies :</h3>
+                <ul>
+                    {% for key, value in input_data.items() %}
+                        <li><strong>{{ key | capitalize }} :</strong> {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3 style="text-align: center;">Prédictions :</h3>
+                <ul>
+                    {% for model, pred in predictions.items() %}
+                        <li>{{ model }} : <span class="highlight">{{ 'Malade' if pred == 1 else 'Sain' }}</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3 style="text-align: center;">Performance des Modèles :</h3>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Modèle</th>
+                                <th>Accuracy</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1 Score</th>
+                                <th>AUC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for model, metrics in kpis.items() %}
+                            <tr>
+                                <td>{{ model }}</td>
+                                <td>{{ metrics['Accuracy'] }}</td>
+                                <td>{{ metrics['Precision'] }}</td>
+                                <td>{{ metrics['Recall'] }}</td>
+                                <td>{{ metrics['F1 Score'] }}</td>
+                                <td>{{ metrics['AUC'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        
+    </div>
+</body>
+</html>
